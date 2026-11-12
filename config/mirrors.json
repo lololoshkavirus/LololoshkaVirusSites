@@ -1,0 +1,24 @@
+{
+  "lv_flash": {
+    "mirrors": [
+      {
+        "name": "GitHub",
+        "url": "https://github.com/lololoshkavirus",
+        "status": "active",
+        "type": "repository"
+      },
+      {
+        "name": "Mirror 2",
+        "url": "",
+        "status": "coming_soon",
+        "type": "download"
+      },
+      {
+        "name": "Mirror 3",
+        "url": "",
+        "status": "coming_soon",
+        "type": "download"
+      }
+    ]
+  }
+}
