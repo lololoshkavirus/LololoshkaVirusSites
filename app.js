@@ -996,13 +996,14 @@
         { slug: 'lololoshkavirus', name: 'LololoshkaVirus', color: 'gold', initial: 'LV', role: 'Основатель команды', country: 'Россия' },
         { slug: 'swirec', name: 'Swirec', color: 'red', initial: 'S', role: 'Участник команды' },
         { slug: 'tin', name: 'TIN', color: 'blue', initial: 'TIN', role: 'Участник команды' },
-        { slug: 'chortovokoritos', name: 'chortovokoritos', color: 'green', initial: 'CK', role: 'Участник команды' }
+        { slug: 'absolute', name: 'Absolute', color: 'green', initial: 'A', role: 'Участник команды', country: 'Россия', benchPress: '80 кг' },
+        { slug: 'tima-crown', name: 'Tima Crown', color: 'purple', initial: 'TC', role: 'Участник команды' }
       ];
       return `
         <section class="page-hero team-hero"><div class="container">
           <p class="section__eyebrow">Holiday squad · 2027</p>
           <h1 class="md-display-medium">Наша команда</h1>
-          <p class="md-body-large page-hero__desc">Четыре участника на одной новогодней ёлке. Нажми на игрушку, чтобы открыть персональную страницу.</p>
+          <p class="md-body-large page-hero__desc">Пять участников на одной новогодней ёлке. Нажми на игрушку, чтобы открыть персональную страницу.</p>
         </div></section>
         <section class="section team-section"><div class="container team-layout">
           <div class="tree-stage" aria-label="Новогодняя ёлка с игрушками участников">
@@ -1022,11 +1023,12 @@
         lololoshkavirus: { name: 'LololoshkaVirus', initial: 'LV', color: 'gold', role: 'Основатель команды', country: 'Россия', socials: [['TikTok','@lololoshkavirus','https://www.tiktok.com/@lololoshkavirus'],['Telegram','@lololoshkavirus','https://t.me/lololoshkavirus'],['Telegram-канал','@LololoShkaVirusTM','https://t.me/LololoShkaVirusTM']] },
         swirec: { name: 'Swirec', initial: 'S', color: 'red', role: 'Участник команды' },
         tin: { name: 'TIN', initial: 'TIN', color: 'blue', role: 'Участник команды' },
-        chortovokoritos: { name: 'chortovokoritos', initial: 'CK', color: 'green', role: 'Участник команды' }
+        absolute: { name: 'Absolute', initial: 'A', color: 'green', role: 'Участник команды', country: 'Россия', benchPress: '80 кг' },
+        'tima-crown': { name: 'Tima Crown', initial: 'TC', color: 'purple', role: 'Участник команды' }
       };
       const m = members[slug]; if (!m) return this.notFound();
       const socials = m.socials ? m.socials.map(([label,value,url])=>`<a class="social-row" href="${url}" target="_blank" rel="noopener noreferrer"><span>${label}</span><b>${value}</b><i>↗</i></a>`).join('') : '<div class="consent-note"><span>✧</span><b>Пока не дали согласие на публикацию информации</b><p>Персональные данные и ссылки добавим только после согласия участника.</p></div>' ;
-      return `<section class="page-hero member-hero"><div class="container"><a class="back-link" href="#/team">← Назад к ёлке</a><p class="section__eyebrow">Team member profile</p><div class="member-profile-head"><div class="member-avatar member-avatar--${m.color}">${m.initial}<i>✦</i></div><div><h1 class="md-display-medium">${m.name}</h1><p class="md-body-large page-hero__desc">${m.role}</p></div></div></div></section><section class="section"><div class="container member-content"><article class="md-card md-card--outlined member-info"><h2 class="md-title-large">Информация</h2><div class="info-pair"><span>Статус</span><b>Участник команды</b></div>${m.country ? `<div class="info-pair"><span>Страна</span><b>${m.country}</b></div>` : ''}</article><article class="md-card md-card--outlined member-info"><h2 class="md-title-large">Социальные сети</h2><div class="social-list">${socials}</div></article></div></section>`;
+      return `<section class="page-hero member-hero"><div class="container"><a class="back-link" href="#/team">← Назад к ёлке</a><p class="section__eyebrow">Team member profile</p><div class="member-profile-head"><div class="member-avatar member-avatar--${m.color}">${m.initial}<i>✦</i></div><div><h1 class="md-display-medium">${m.name}</h1><p class="md-body-large page-hero__desc">${m.role}</p></div></div></div></section><section class="section"><div class="container member-content"><article class="md-card md-card--outlined member-info"><h2 class="md-title-large">Информация</h2><div class="info-pair"><span>Статус</span><b>Участник команды</b></div>${m.country ? `<div class="info-pair"><span>Страна</span><b>${m.country}</b></div>` : ''}${m.benchPress ? `<div class="info-pair"><span>Жим лёжа</span><b>${m.benchPress}</b></div>` : ''}</article><article class="md-card md-card--outlined member-info"><h2 class="md-title-large">Социальные сети</h2><div class="social-list">${socials}</div></article></div></section>`;
     },
 
     projects() {

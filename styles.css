@@ -981,11 +981,13 @@ body[data-heavy-effects="off"] *, body[data-heavy-effects="off"] *::before, body
 .ornament--gold { background: radial-gradient(circle at 30% 25%,#fff0ad,#d5a33e 70%); color: #5b3b0d; }
 .ornament--red { background: radial-gradient(circle at 30% 25%,#ffc1c5,#d94e5b 70%); }
 .ornament--blue { background: radial-gradient(circle at 30% 25%,#d1f4ff,#398cb9 70%); }
-.ornament--green { background: radial-gradient(circle at 30% 25%,#d1ffe0,#35976a 70%); }
+.ornament--green { background: radial-gradient(circle at 30% 25%,#d1ffe0,#35976a 70%); color: #123d2b; }
+.ornament--purple { background: radial-gradient(circle at 30% 25%,#ead5ff,#8752b7 70%); color: #35164f; }
 .ornament-1 { left: calc(50% - 28px); top: 135px; }
 .ornament-2 { left: calc(50% - 110px); top: 250px; }
 .ornament-3 { left: calc(50% + 58px); top: 310px; }
-.ornament-4 { left: calc(50% - 32px); top: 415px; }
+.ornament-4 { left: calc(50% - 112px); top: 405px; }
+.ornament-5 { left: calc(50% + 62px); top: 425px; }
 .tree-gift { position: absolute; bottom: 12px; width: 75px; height: 57px; border-radius: 5px; background: linear-gradient(135deg,#bd4655,#842d3a); box-shadow: 0 9px 16px rgba(0,0,0,.2); }
 .tree-gift::before { content: ""; position: absolute; left: 31px; height: 100%; width: 12px; background: #e8c879; }
 .tree-gift::after { content: ""; position: absolute; left: 25px; top: -10px; width: 25px; height: 13px; border: 4px solid #e8c879; border-radius: 50%; }
@@ -1005,6 +1007,7 @@ body[data-heavy-effects="off"] *, body[data-heavy-effects="off"] *::before, body
 .member-dot--red,.member-avatar--red { background: linear-gradient(135deg,#ff9da5,#b83e50); }
 .member-dot--blue,.member-avatar--blue { background: linear-gradient(135deg,#a4e8ff,#347da9); }
 .member-dot--green,.member-avatar--green { background: linear-gradient(135deg,#a9f0c4,#31815c); }
+.member-dot--purple,.member-avatar--purple { background: linear-gradient(135deg,#ead5ff,#8752b7); color: #35164f; }
 .member-arrow { color: var(--holiday-gold); font-size: 20px; }
 .back-link { display: inline-block; margin-bottom: 25px; color: var(--holiday-green); text-decoration: none; }
 .member-profile-head { display: flex; align-items: center; gap: 25px; margin-top: 20px; }
