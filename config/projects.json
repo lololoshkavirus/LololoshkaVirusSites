@@ -1,0 +1,16 @@
+{
+  "projects": [
+    {
+      "id": "lv_flash",
+      "name": "LV Flash",
+      "logo": "LV",
+      "description": "Фирменная утилита для работы с прошивками Android-устройств.",
+      "category": "Android Tools",
+      "platforms": ["Android"],
+      "version": "",
+      "status": "coming_soon",
+      "mirrorsKey": "lv_flash",
+      "links": []
+    }
+  ]
+}
