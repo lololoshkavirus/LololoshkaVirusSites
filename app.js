@@ -152,6 +152,34 @@
   }
 
   /* ============================================================
+     FX: Performance mode (heavy effects toggle)
+     ============================================================ */
+  const Effects = {
+    enabled: true,
+    init() {
+      const saved = localStorage.getItem('lv-heavy-effects');
+      this.enabled = saved !== 'off' && !REDUCED;
+      this.apply();
+      $('#effects-toggle')?.addEventListener('click', () => {
+        this.enabled = !this.enabled;
+        localStorage.setItem('lv-heavy-effects', this.enabled ? 'on' : 'off');
+        this.apply();
+        Notify.show(this.enabled ? 'Тяжёлые эффекты включены' : 'Режим производительности включён', 'info');
+      });
+    },
+    apply() {
+      document.body.dataset.heavyEffects = this.enabled ? 'on' : 'off';
+      const btn = $('#effects-toggle');
+      if (btn) {
+        btn.setAttribute('aria-pressed', this.enabled ? 'true' : 'false');
+        btn.setAttribute('aria-label', this.enabled ? 'Выключить тяжёлые эффекты' : 'Включить тяжёлые эффекты');
+        btn.title = this.enabled ? 'Тяжёлые эффекты: включены' : 'Тяжёлые эффекты: выключены';
+        btn.innerHTML = this.enabled ? '<span aria-hidden="true">✦</span>' : '<span aria-hidden="true">◌</span>';
+      }
+    }
+  };
+
+  /* ============================================================
      FX: Theme
      ============================================================ */
   const Theme = {
@@ -268,7 +296,7 @@
     const isLight = () => document.documentElement.getAttribute('data-theme') === 'light';
 
     const draw = () => {
-      if (document.hidden) { requestAnimationFrame(draw); return; }
+      if (document.hidden || document.body.dataset.heavyEffects === 'off') { requestAnimationFrame(draw); return; }
       t += 1;
       ctx.clearRect(0, 0, w, h);
       const light = isLight();
@@ -863,7 +891,13 @@
           <div class="hero__glow" aria-hidden="true"></div>
           <div class="hero__grid" aria-hidden="true"></div>
           <div class="container hero__inner">
-            <p class="hero__eyebrow"><span class="hero__dot" aria-hidden="true"></span>Технологическая команда</p>
+            <div class="holiday-banner" role="note">
+              <span class="holiday-banner__spark" aria-hidden="true">✦</span>
+              <span>NEW YEAR EDITION</span>
+              <span class="holiday-banner__divider" aria-hidden="true"></span>
+              <span class="holiday-banner__message">Новый год — новые идеи</span>
+            </div>
+            <p class="hero__eyebrow"><span class="hero__dot" aria-hidden="true"></span>Технологическая команда <span class="holiday-eyebrow">· 2027</span></p>
             <h1 class="hero__title" id="hero-title">
               <span class="hero__title-line" data-scramble>LOLOLOSHKA</span>
               <span class="hero__title-line hero__title-line--accent" data-scramble>VIRUS</span><sup class="hero__tm">™</sup>
@@ -955,6 +989,44 @@
           </div>
         </section>
       `;
+    },
+
+    team() {
+      const members = [
+        { slug: 'lololoshkavirus', name: 'LololoshkaVirus', color: 'gold', initial: 'LV', role: 'Основатель команды', country: 'Россия' },
+        { slug: 'swirec', name: 'Swirec', color: 'red', initial: 'S', role: 'Участник команды' },
+        { slug: 'tin', name: 'TIN', color: 'blue', initial: 'TIN', role: 'Участник команды' },
+        { slug: 'chortovokoritos', name: 'chortovokoritos', color: 'green', initial: 'CK', role: 'Участник команды' }
+      ];
+      return `
+        <section class="page-hero team-hero"><div class="container">
+          <p class="section__eyebrow">Holiday squad · 2027</p>
+          <h1 class="md-display-medium">Наша команда</h1>
+          <p class="md-body-large page-hero__desc">Четыре участника на одной новогодней ёлке. Нажми на игрушку, чтобы открыть персональную страницу.</p>
+        </div></section>
+        <section class="section team-section"><div class="container team-layout">
+          <div class="tree-stage" aria-label="Новогодняя ёлка с игрушками участников">
+            <div class="tree-star">✦</div><div class="tree tree--one"></div><div class="tree tree--two"></div><div class="tree tree--three"></div><div class="tree-trunk"></div><div class="tree-garland garland-one"></div><div class="tree-garland garland-two"></div>
+            ${members.map((m,i)=>`<a class="tree-ornament ornament-${i+1} ornament--${m.color}" href="#/team/${m.slug}" aria-label="Открыть страницу ${m.name}"><span>${m.initial}</span><small>${m.name}</small></a>`).join('')}
+            <div class="tree-gift gift-one"></div><div class="tree-gift gift-two"></div>
+          </div>
+          <div class="team-intro"><span class="team-kicker">✧ THE CREW ✧</span><h2 class="md-headline-large">Знакомься с участниками</h2><p class="md-body-large">Каждая игрушка — отдельная страница участника. Информация и ссылки появятся после подтверждения самих участников.</p>
+            <div class="team-member-list">${members.map(m=>`<a class="team-member-row" href="#/team/${m.slug}"><span class="member-dot member-dot--${m.color}">${m.initial.slice(0,1)}</span><span><b>${m.name}</b><small>${m.role}</small></span><span class="member-arrow">↗</span></a>`).join('')}</div>
+          </div>
+        </div></section>`;
+    },
+
+    member() {
+      const slug = (window.location.hash.replace(/^#\/team\//,'').split(/[?#]/)[0] || '').toLowerCase();
+      const members = {
+        lololoshkavirus: { name: 'LololoshkaVirus', initial: 'LV', color: 'gold', role: 'Основатель команды', country: 'Россия', socials: [['TikTok','@lololoshkavirus','https://www.tiktok.com/@lololoshkavirus'],['Telegram','@lololoshkavirus','https://t.me/lololoshkavirus'],['Telegram-канал','@LololoShkaVirusTM','https://t.me/LololoShkaVirusTM']] },
+        swirec: { name: 'Swirec', initial: 'S', color: 'red', role: 'Участник команды' },
+        tin: { name: 'TIN', initial: 'TIN', color: 'blue', role: 'Участник команды' },
+        chortovokoritos: { name: 'chortovokoritos', initial: 'CK', color: 'green', role: 'Участник команды' }
+      };
+      const m = members[slug]; if (!m) return this.notFound();
+      const socials = m.socials ? m.socials.map(([label,value,url])=>`<a class="social-row" href="${url}" target="_blank" rel="noopener noreferrer"><span>${label}</span><b>${value}</b><i>↗</i></a>`).join('') : '<div class="consent-note"><span>✧</span><b>Пока не дали согласие на публикацию информации</b><p>Персональные данные и ссылки добавим только после согласия участника.</p></div>' ;
+      return `<section class="page-hero member-hero"><div class="container"><a class="back-link" href="#/team">← Назад к ёлке</a><p class="section__eyebrow">Team member profile</p><div class="member-profile-head"><div class="member-avatar member-avatar--${m.color}">${m.initial}<i>✦</i></div><div><h1 class="md-display-medium">${m.name}</h1><p class="md-body-large page-hero__desc">${m.role}</p></div></div></div></section><section class="section"><div class="container member-content"><article class="md-card md-card--outlined member-info"><h2 class="md-title-large">Информация</h2><div class="info-pair"><span>Статус</span><b>Участник команды</b></div>${m.country ? `<div class="info-pair"><span>Страна</span><b>${m.country}</b></div>` : ''}</article><article class="md-card md-card--outlined member-info"><h2 class="md-title-large">Социальные сети</h2><div class="social-list">${socials}</div></article></div></section>`;
     },
 
     projects() {
@@ -1073,17 +1145,74 @@
   };
 
   /* ============================================================
+     Seasonal FX: lightweight snowfall
+     ============================================================ */
+  function initSnowfall() {
+    const canvas = $('#fx-snow');
+    if (!canvas || REDUCED) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const flakes = [];
+    const count = window.innerWidth < 700 ? 34 : 72;
+
+    const resize = () => {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    for (let i = 0; i < count; i++) {
+      flakes.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: 0.8 + Math.random() * 2.1,
+        speed: 0.35 + Math.random() * 0.85,
+        drift: (Math.random() - 0.5) * 0.45,
+        phase: Math.random() * Math.PI * 2,
+        alpha: 0.25 + Math.random() * 0.5
+      });
+    }
+
+    let frame = 0;
+    const draw = () => {
+      if (!document.hidden && document.body.dataset.heavyEffects !== 'off') {
+        frame += 1;
+        ctx.clearRect(0, 0, w, h);
+        for (const f of flakes) {
+          f.y += f.speed;
+          f.x += f.drift + Math.sin(frame * 0.012 + f.phase) * 0.18;
+          if (f.y > h + 5) { f.y = -5; f.x = Math.random() * w; }
+          if (f.x < -5) f.x = w + 5;
+          if (f.x > w + 5) f.x = -5;
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(235, 246, 255, ${f.alpha})`;
+          ctx.fill();
+        }
+      }
+      requestAnimationFrame(draw);
+    };
+    draw();
+  }
+
+  /* ============================================================
      Router with page transition
      ============================================================ */
   const Router = {
-    routes: { '/': 'home', '/projects': 'projects', '/about': 'about', '/contacts': 'contacts' },
+    routes: { '/': 'home', '/team': 'team', '/projects': 'projects', '/about': 'about', '/contacts': 'contacts' },
     init() {
       window.addEventListener('hashchange', () => this.render());
       this.render(true);
     },
     current() {
       const hash = window.location.hash.replace(/^#/, '') || '/';
-      return this.routes[hash] ? hash : '/__404';
+      return this.routes[hash] || /^\/team\/[a-z0-9_-]+$/.test(hash) ? hash : '/__404';
     },
     render(initial = false) {
       const route = this.current();
@@ -1092,7 +1221,8 @@
 
       const doRender = () => {
         state.route = route;
-        const view = route === '/__404' ? 'notFound' : this.routes[route];
+        const isMember = route.startsWith('/team/');
+        const view = route === '/__404' ? 'notFound' : (isMember ? 'member' : this.routes[route]);
         main.innerHTML = Pages[view]();
 
         if (view === 'home') {
@@ -1104,13 +1234,15 @@
             const txt = sub.textContent;
             typewriter(sub, txt, 18);
           }
+        } else if (view === 'team' || view === 'member') {
+          // Team pages are rendered independently; links use the hash router.
         } else if (view === 'projects') {
           renderProjectsPage();
         } else if (view === 'contacts') {
           renderContacts('#contacts-grid', false);
         }
 
-        Nav.updateActive(route === '/__404' ? '' : route);
+        Nav.updateActive(route === '/__404' ? '' : (route.startsWith('/team/') ? '/team' : route));
         Reveal.observe();
         bindRipple(main);
         bindMagnetic();
@@ -1122,11 +1254,12 @@
 
         const titles = {
           '/': 'LOLOLOSHKAVIRUSTM™ — Технологическая команда',
+          '/team': 'Команда — LOLOLOSHKAVIRUSTM™',
           '/projects': 'Projects — LOLOLOSHKAVIRUSTM™',
           '/about': 'About — LOLOLOSHKAVIRUSTM™',
           '/contacts': 'Contacts — LOLOLOSHKAVIRUSTM™'
         };
-        document.title = titles[route] || '404 — LOLOLOSHKAVIRUSTM™';
+        document.title = titles[route] || (isMember ? `${Pages.member ? route.split('/').pop() : 'Участник'} — Команда LOLOLOSHKAVIRUSTM™` : '404 — LOLOLOSHKAVIRUSTM™');
       };
 
       if (initial) doRender();
@@ -1139,8 +1272,9 @@
      ============================================================ */
   async function boot() {
     Notify.init();
-    Cursor.init();
     Theme.init();
+    Effects.init();
+    Cursor.init();
     Nav.init();
     bindDialogs();
     Reveal.init();
@@ -1148,6 +1282,7 @@
     Transition.init();
     initMesh();
     bindParticleBurst();
+    initSnowfall();
 
     await loadConfigs();
 
